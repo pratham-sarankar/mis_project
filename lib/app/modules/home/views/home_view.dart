@@ -51,7 +51,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                         Text(
-                          "Pratham.",
+                          "Good Morning.",
                           style: GoogleFonts.poppins(
                             fontSize: 35,
                             fontWeight: FontWeight.bold,
@@ -97,74 +97,199 @@ class HomeView extends GetView<HomeController> {
                                   },
                                   child: const Icon(Icons.add),
                                 ),
-                                body: ListView.separated(
-                                  itemCount: 10,
-                                  separatorBuilder: (context, index) {
-                                    return const Divider(
-                                      height: 0.5,
-                                      thickness: 0.5,
-                                    );
-                                  },
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return Dialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              surfaceTintColor: Colors.white,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Icon(
-                                                      CupertinoIcons.option,
-                                                      color: Get.theme
-                                                          .colorScheme.primary,
-                                                    ),
-                                                    Text(
-                                                      "Company ${index + 1}",
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () {},
-                                                      child: Text("Submit"),
-                                                    )
-                                                  ],
+                                body: Obx(
+                                  () => controller.isLoading.value
+                                      ? const Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            CupertinoActivityIndicator(
+                                              radius: 20,
+                                            ),
+                                            SizedBox(height: 20),
+                                            Center(
+                                              child: Text(
+                                                "Loading...",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
+                                            ),
+                                          ],
+                                        )
+                                      : ListView.builder(
+                                          itemCount: controller.clients.length,
+                                          itemBuilder: (context, index) {
+                                            return Column(
+                                              children: [
+                                                ListTile(
+                                                  onTap: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return Dialog(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                          ),
+                                                          surfaceTintColor:
+                                                              Colors.white,
+                                                          child: Stack(
+                                                            fit: StackFit
+                                                                .passthrough,
+                                                            children: [
+                                                              Positioned(
+                                                                right: 5,
+                                                                top: 5,
+                                                                child:
+                                                                    IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Get.back();
+                                                                  },
+                                                                  iconSize: 20,
+                                                                  icon:
+                                                                      const Icon(
+                                                                    CupertinoIcons
+                                                                        .clear,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  horizontal:
+                                                                      30,
+                                                                  vertical: 30,
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Actions",
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        fontSize:
+                                                                            25,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      "You can perform the following actions on the company.",
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        fontSize:
+                                                                            14,
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Expanded(
+                                                                          child:
+                                                                              ElevatedButton(
+                                                                            onPressed:
+                                                                                () {},
+                                                                            child:
+                                                                                const Text(
+                                                                              "Track Vehicle",
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                        ),
+                                                                        Expanded(
+                                                                          child:
+                                                                              ElevatedButton(
+                                                                            onPressed:
+                                                                                () {},
+                                                                            style:
+                                                                                ElevatedButton.styleFrom(
+                                                                              padding: EdgeInsets.zero,
+                                                                            ),
+                                                                            child:
+                                                                                const Text(
+                                                                              "Add/Edit Ledger",
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(
+                                                                        height:
+                                                                            10),
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () async {
+                                                                        Get.back();
+                                                                        final client =
+                                                                            await Get.toNamed(
+                                                                          Routes
+                                                                              .CLIENT_FORM,
+                                                                          arguments:
+                                                                              controller.clients[index],
+                                                                        );
+                                                                        if (client !=
+                                                                            null) {
+                                                                          controller.clients[index] =
+                                                                              client;
+                                                                          controller
+                                                                              .clients
+                                                                              .refresh();
+                                                                        }
+                                                                      },
+                                                                      child:
+                                                                          const Text(
+                                                                        "View Details",
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  title: Text(
+                                                    "${index + 1}. ${controller.clients[index].name}",
+                                                    style: GoogleFonts.poppins(
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  minVerticalPadding: 0,
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    horizontal: 20,
+                                                  ),
+                                                ),
+                                                Divider(
+                                                  height: .5,
+                                                  thickness: .5,
+                                                  color: Colors.grey.shade500,
+                                                ),
+                                              ],
                                             );
                                           },
-                                        );
-                                      },
-                                      title: Text(
-                                        "Company ${index + 1}",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Get.theme.colorScheme.primary,
                                         ),
-                                      ),
-                                      subtitle: Text(
-                                        "Transport Name: Company ${index + 1}",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    );
-                                  },
                                 ),
                               ),
                             ),

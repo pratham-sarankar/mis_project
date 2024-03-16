@@ -11,6 +11,8 @@ dependencies:
   google_fonts: ^6.1.0
   pin_code_fields: ^8.0.1
   get: 4.6.6
+  get_storage: ^2.1.1
+  flutter_dotenv: ^5.1.0
   flutter: 
     sdk: flutter
 
@@ -23,6 +25,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - assets/vectors/auth/
     - assets/vectors/home/
     - assets/vectors/

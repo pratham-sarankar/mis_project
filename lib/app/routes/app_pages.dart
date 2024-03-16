@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
 
+import '../data/services/auth_service.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
+import '../modules/client_form/bindings/client_form_binding.dart';
+import '../modules/client_form/views/client_form_view.dart';
 import '../modules/company_form/bindings/company_form_binding.dart';
 import '../modules/company_form/views/company_form_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -14,7 +17,8 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.AUTH;
+  static final INITIAL =
+      Get.find<AuthService>().isLoggedIn ? Routes.HOME : Routes.AUTH;
 
   static final routes = [
     GetPage(
@@ -36,6 +40,11 @@ class AppPages {
       name: _Paths.COMPANY_FORM,
       page: () => const CompanyFormView(),
       binding: CompanyFormBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLIENT_FORM,
+      page: () => const ClientFormView(),
+      binding: ClientFormBinding(),
     ),
   ];
 }

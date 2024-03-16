@@ -1,12 +1,30 @@
 import 'package:get/get.dart';
+import 'package:mis_project/app/data/models/client.dart';
+import 'package:mis_project/app/data/repositories/client_repository.dart';
+import 'package:mis_project/app/data/utils/toast.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  late RxBool isLoading;
+  late RxList<Client> clients;
 
-  final count = 0.obs;
   @override
   void onInit() {
+    isLoading = false.obs;
+    clients = <Client>[].obs;
+    loadClients();
     super.onInit();
+  }
+
+  void loadClients() async {
+    try {
+      isLoading.value = true;
+      final response = await Get.find<ClientRepository>().fetchClients();
+      clients.value = response;
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+      Toast.showError(e.toString());
+    }
   }
 
   @override
@@ -18,6 +36,4 @@ class HomeController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

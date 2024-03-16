@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mis_project/app/routes/app_pages.dart';
+import 'package:mis_project/app/data/utils/enums/otp_status.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../controllers/otp_controller.dart';
@@ -59,21 +59,21 @@ class OtpView extends GetView<OtpController> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text.rich(
+                  Text.rich(
                     TextSpan(
                       text: "Enter the OTP sent to your mobile number, ",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                       ),
                       children: [
                         TextSpan(
-                          text: "+919876543210 ",
-                          style: TextStyle(
+                          text: controller.phoneNumber,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextSpan(
-                          text: "to verify your account.",
+                        const TextSpan(
+                          text: " to verify your account.",
                         ),
                       ],
                     ),
@@ -82,6 +82,7 @@ class OtpView extends GetView<OtpController> {
                   const SizedBox(height: 20),
                   PinCodeTextField(
                     appContext: Get.context!,
+                    controller: controller.otpController,
                     length: 4,
                     pastedTextStyle: TextStyle(
                       color: Colors.green.shade600,
@@ -89,10 +90,6 @@ class OtpView extends GetView<OtpController> {
                     ),
                     enablePinAutofill: true,
                     obscureText: false,
-                    // obscuringCharacter: '*',
-                    // obscuringWidget: const FlutterLogo(
-                    //   size: 24,
-                    // ),
                     blinkWhenObscuring: true,
                     animationType: AnimationType.fade,
                     pinTheme: PinTheme(
@@ -136,24 +133,58 @@ class OtpView extends GetView<OtpController> {
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Resend OTP in 00:30",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Get.theme.colorScheme.primary,
-                      ),
-                    ),
+                    child: Obx(() {
+                      switch (controller.otpStatus.value) {
+                        case OTPStatus.sent:
+                          return Text(
+                            "Resend OTP in ${controller.formattedOTPTime}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Get.theme.colorScheme.primary,
+                            ),
+                          );
+                        case OTPStatus.resending:
+                          return Text(
+                            "Resending OTP...",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Get.theme.colorScheme.primary,
+                            ),
+                          );
+                        case OTPStatus.canResend:
+                          return InkWell(
+                            onTap: () {
+                              controller.resentOTP();
+                            },
+                            child: Text(
+                              "Resend OTP",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Get.theme.colorScheme.primary,
+                              ),
+                            ),
+                          );
+                      }
+                    }),
                   ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: () {
-                      Get.toNamed(Routes.COMPANY_FORM);
-                    },
-                    child: const Text(
-                      "Verify",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
+                    onPressed: controller.verifyOTP,
+                    child: Obx(
+                      () => controller.isLoading.value
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.white),
+                              ),
+                            )
+                          : const Text(
+                              "Verify",
+                            ),
                     ),
                   ),
                   const SizedBox(height: 20),

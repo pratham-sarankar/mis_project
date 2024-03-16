@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mis_project/app/data/repositories/client_repository.dart';
+import 'package:mis_project/app/data/repositories/company_repository.dart';
+import 'package:mis_project/app/data/services/auth_service.dart';
 
+import 'app/data/repositories/auth_repository.dart';
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  await dotenv.load(fileName: ".env");
+
+  //Add services here
+  Get.put<AuthService>(AuthService(), permanent: true);
+
+  //Add repositories here
+  Get.put<AuthRepository>(AuthRepository(), permanent: true);
+  Get.put<CompanyRepository>(CompanyRepository(), permanent: true);
+  Get.put<ClientRepository>(ClientRepository(), permanent: true);
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
