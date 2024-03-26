@@ -8,6 +8,8 @@ abstract class Routes {
   static const OTP = _Paths.OTP;
   static const COMPANY_FORM = _Paths.COMPANY_FORM;
   static const CLIENT_FORM = _Paths.CLIENT_FORM;
+  static const CONSIGNMENTS = _Paths.CONSIGNMENTS;
+  static const CONSIGNMENTS_FORM = _Paths.CONSIGNMENTS_FORM;
 }
 
 abstract class _Paths {
@@ -17,4 +19,6 @@ abstract class _Paths {
   static const OTP = '/otp';
   static const COMPANY_FORM = '/company-form';
   static const CLIENT_FORM = '/client-form';
+  static const CONSIGNMENTS = '/consignments';
+  static const CONSIGNMENTS_FORM = '/consignments-form';
 }

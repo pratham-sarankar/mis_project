@@ -40,6 +40,7 @@ class AuthRepository extends GetConnect {
   }
 
   Future<LoginResponse> verifyOTP(String verificationToken, String otp) async {
+    print(otp);
     Response response = await post("/user/verify-otp",
         json.encode({"verificationToken": verificationToken, "otp": otp}));
     print(response.body);

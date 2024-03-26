@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mis_project/app/data/repositories/client_repository.dart';
 import 'package:mis_project/app/data/repositories/company_repository.dart';
+import 'package:mis_project/app/data/repositories/consignment_repository.dart';
 import 'package:mis_project/app/data/services/auth_service.dart';
 
 import 'app/data/repositories/auth_repository.dart';
@@ -23,6 +24,7 @@ void main() async {
   Get.put<AuthRepository>(AuthRepository(), permanent: true);
   Get.put<CompanyRepository>(CompanyRepository(), permanent: true);
   Get.put<ClientRepository>(ClientRepository(), permanent: true);
+  Get.put<ConsignmentRepository>(ConsignmentRepository(), permanent: true);
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -51,6 +53,15 @@ void main() async {
             ),
             backgroundColor: const Color(0xFF1F41BB),
             foregroundColor: Colors.white,
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 50),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(

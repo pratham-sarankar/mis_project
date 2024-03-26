@@ -17,6 +17,17 @@ class ClientRepository extends GetConnect {
     }
   }
 
+  Future<Client> createClient(Client client) async {
+    final token = await Get.find<AuthService>().getToken();
+    final headers = {"Authorization": "Bearer $token"};
+    final response = await post("/client", client.toJson(), headers: headers);
+    if (response.status.hasError) {
+      throw response.body['message'];
+    } else {
+      return Client.fromJson(response.body['client']);
+    }
+  }
+
   Future<Client> updateClient(Client client) async {
     final token = await Get.find<AuthService>().getToken();
     final headers = {"Authorization": "Bearer $token"};
@@ -26,6 +37,17 @@ class ClientRepository extends GetConnect {
       throw response.body['message'];
     } else {
       return Client.fromJson(response.body['client']);
+    }
+  }
+
+  Future<void> deleteClient(Client client) async {
+    final token = await Get.find<AuthService>().getToken();
+    final headers = {"Authorization": "Bearer $token"};
+    final response = await delete("/client/${client.id}", headers: headers);
+    if (response.status.hasError) {
+      throw response.body['message'];
+    } else {
+      return;
     }
   }
 

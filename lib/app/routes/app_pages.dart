@@ -7,6 +7,10 @@ import '../modules/client_form/bindings/client_form_binding.dart';
 import '../modules/client_form/views/client_form_view.dart';
 import '../modules/company_form/bindings/company_form_binding.dart';
 import '../modules/company_form/views/company_form_view.dart';
+import '../modules/consignments/bindings/consignments_binding.dart';
+import '../modules/consignments/views/consignments_view.dart';
+import '../modules/consignments_form/bindings/consignments_form_binding.dart';
+import '../modules/consignments_form/views/consignments_form_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/otp/bindings/otp_binding.dart';
@@ -45,6 +49,16 @@ class AppPages {
       name: _Paths.CLIENT_FORM,
       page: () => const ClientFormView(),
       binding: ClientFormBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONSIGNMENTS,
+      page: () => const ConsignmentsView(),
+      binding: ConsignmentsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONSIGNMENTS_FORM,
+      page: () => const ConsignmentsFormView(),
+      binding: ConsignmentsFormBinding(),
     ),
   ];
 }

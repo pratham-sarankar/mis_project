@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../controllers/client_form_controller.dart';
 
 class ClientFormView extends GetView<ClientFormController> {
-  const ClientFormView({Key? key}) : super(key: key);
+  const ClientFormView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,12 +93,60 @@ class ClientFormView extends GetView<ClientFormController> {
                                         AlwaysStoppedAnimation(Colors.white),
                                   ),
                                 )
-                              : const Text(
-                                  "Submit",
+                              : Text(
+                                  controller.isEdit ? "Update" : "Submit",
                                 ),
                         ),
                       ),
                       const SizedBox(height: 20),
+                      if (controller.isEdit)
+                        Theme(
+                          data: Get.theme.copyWith(
+                            dividerColor: Colors.transparent,
+                          ),
+                          child: ExpansionTile(
+                            title: const Text("More Actions"),
+                            tilePadding: const EdgeInsets.all(0),
+                            children: [
+                              const ListTile(
+                                leading: Icon(CupertinoIcons.delete),
+                                title: Text(
+                                  "Delete",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  "Note: Deleting this client will delete all the associated consignments and ledgers.",
+                                ),
+                                // isThreeLine: true,
+                              ),
+                              OutlinedButton(
+                                onPressed: controller.onDeleteAction,
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(
+                                    color: Get.theme.colorScheme.error,
+                                  ),
+                                  foregroundColor: Get.theme.colorScheme.error,
+                                ),
+                                child: Obx(
+                                  () => controller.isDeleting.value
+                                      ? const SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor: AlwaysStoppedAnimation(
+                                                Colors.white),
+                                          ),
+                                        )
+                                      : const Text('Delete'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                     ],
                   ),
                 ),

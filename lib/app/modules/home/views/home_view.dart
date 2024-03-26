@@ -92,8 +92,12 @@ class HomeView extends GetView<HomeController> {
                                   automaticallyImplyLeading: false,
                                 ),
                                 floatingActionButton: FloatingActionButton(
-                                  onPressed: () {
-                                    Get.toNamed(Routes.COMPANY_FORM);
+                                  onPressed: () async {
+                                    final result =
+                                        await Get.toNamed(Routes.CLIENT_FORM);
+                                    if (result != null) {
+                                      controller.loadClients();
+                                    }
                                   },
                                   child: const Icon(Icons.add),
                                 ),
@@ -197,39 +201,20 @@ class HomeView extends GetView<HomeController> {
                                                                       height:
                                                                           20,
                                                                     ),
-                                                                    Row(
-                                                                      children: [
-                                                                        Expanded(
-                                                                          child:
-                                                                              ElevatedButton(
-                                                                            onPressed:
-                                                                                () {},
-                                                                            child:
-                                                                                const Text(
-                                                                              "Track Vehicle",
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                        ),
-                                                                        Expanded(
-                                                                          child:
-                                                                              ElevatedButton(
-                                                                            onPressed:
-                                                                                () {},
-                                                                            style:
-                                                                                ElevatedButton.styleFrom(
-                                                                              padding: EdgeInsets.zero,
-                                                                            ),
-                                                                            child:
-                                                                                const Text(
-                                                                              "Add/Edit Ledger",
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ],
+                                                                    ElevatedButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Get.offAndToNamed(
+                                                                          Routes
+                                                                              .CONSIGNMENTS,
+                                                                          arguments:
+                                                                              controller.clients[index],
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          const Text(
+                                                                        "Manage Consignments",
+                                                                      ),
                                                                     ),
                                                                     const SizedBox(
                                                                         height:
@@ -245,14 +230,8 @@ class HomeView extends GetView<HomeController> {
                                                                           arguments:
                                                                               controller.clients[index],
                                                                         );
-                                                                        if (client !=
-                                                                            null) {
-                                                                          controller.clients[index] =
-                                                                              client;
-                                                                          controller
-                                                                              .clients
-                                                                              .refresh();
-                                                                        }
+                                                                        controller
+                                                                            .loadClients();
                                                                       },
                                                                       child:
                                                                           const Text(
@@ -269,7 +248,8 @@ class HomeView extends GetView<HomeController> {
                                                     );
                                                   },
                                                   title: Text(
-                                                    "${index + 1}. ${controller.clients[index].name}",
+                                                    controller
+                                                        .clients[index].name,
                                                     style: GoogleFonts.poppins(
                                                       fontSize: 18,
                                                     ),
