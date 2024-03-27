@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:mis_project/app/data/models/consignment.dart';
+import 'package:mis_project/app/modules/consignments/widgets/consignment_card.dart';
 import 'package:mis_project/app/routes/app_pages.dart';
 
 import '../controllers/consignments_controller.dart';
@@ -127,143 +127,12 @@ class ConsignmentsView extends GetView<ConsignmentsController> {
                         itemCount: controller.consignments.length,
                         itemBuilder: (context, index) {
                           final consignment = controller.consignments[index];
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 20),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 20,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    consignment.vehicleNo,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text(
-                                            "Dispatch Date",
-                                          ),
-                                          Text(
-                                            DateFormat("d MMM, yyyy").format(
-                                              consignment.dispatchDate,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            right: 5,
-                                            left: 5,
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              for (var i = 0; i <= 12; i++)
-                                                Expanded(
-                                                  child: Divider(
-                                                    thickness: 1,
-                                                    color: i % 2 == 0
-                                                        ? Colors.transparent
-                                                        : Colors.black,
-                                                  ),
-                                                ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          const Text("Delivery Date"),
-                                          Text(
-                                            DateFormat("d MMM, yyyy").format(
-                                              consignment.deliveryDate!,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Image.network(
-                                          "https://cdn-icons-png.flaticon.com/128/854/854996.png",
-                                          width: 40,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        const Text(":"),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          consignment.destination,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.green,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey.shade400,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Image.network(
-                                          "https://cdn-icons-png.flaticon.com/128/15107/15107019.png",
-                                          width: 40,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        const Text(":"),
-                                        const SizedBox(width: 8),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "Driver's Contact No.",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              consignment.driverMobileNo,
-                                              style: const TextStyle(),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          return ConsignmentCard(
+                            consignment: consignment,
+                            onUpdate: (consignment) {
+                              controller.consignments[index] = consignment;
+                              controller.consignments.refresh();
+                            },
                           );
                         },
                       ),

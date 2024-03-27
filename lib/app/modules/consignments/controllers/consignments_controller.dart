@@ -23,7 +23,6 @@ class ConsignmentsController extends GetxController {
       isLoading.value = true;
       final result =
           await Get.find<ConsignmentRepository>().fetchConsignments(client);
-      print("Result: ${result.length}");
       consignments.value = result;
       isLoading.value = false;
     } catch (e) {
